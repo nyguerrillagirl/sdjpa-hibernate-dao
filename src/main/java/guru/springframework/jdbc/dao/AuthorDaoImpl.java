@@ -20,7 +20,10 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author getById(Long id) {
-        return getEntityManager().find(Author.class, id);
+        EntityManager em = getEntityManager();
+        Author author = em.find(Author.class, id);
+        em.close();
+        return author;
     }
 
     @Override
@@ -42,17 +45,25 @@ public class AuthorDaoImpl implements AuthorDao {
         em.persist(author);
         em.flush(); // forces Hibernate to write to the database
         em.getTransaction().commit();
+        em.close();
         return author;
     }
 
     @Override
     public Author updateAuthor(Author author) {
         EntityManager em = getEntityManager();
-        em.joinTransaction();
-        em.merge(author);
-        em.flush();
-        em.clear();
-        return em.find(Author.class, author.getId());
+        try {
+            em.getTransaction().begin();
+            em.merge(author);
+            em.flush();
+            em.clear();
+            Author savedAuthor = em.find(Author.class, author.getId());
+            em.getTransaction().commit();
+            em.close();
+            return savedAuthor;
+        } finally {
+            em.close();
+        }
     }
 
     @Override

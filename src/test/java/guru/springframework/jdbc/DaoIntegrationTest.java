@@ -38,6 +38,12 @@ public class DaoIntegrationTest {
     }
 
     @Test
+    void testGetAllBooks() {
+        List<Book> books = bookDao.findAll();
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isGreaterThan(0);
+    }
+    @Test
     void testDeleteBook() {
         Book book = new Book();
         book.setIsbn("1234");
@@ -97,6 +103,7 @@ public class DaoIntegrationTest {
         Book book = bookDao.findBookByTitle("Clean Code");
 
         assertThat(book).isNotNull();
+        assertThat(book.getTitle()).isEqualTo("Clean Code");
     }
 
     @Test

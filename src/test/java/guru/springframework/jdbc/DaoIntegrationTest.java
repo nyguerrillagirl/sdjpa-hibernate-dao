@@ -14,6 +14,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
@@ -162,5 +164,13 @@ public class DaoIntegrationTest {
 
         assertThat(author).isNotNull();
 
+    }
+
+    @Test
+    void testListAuthorByLastNameLike() {
+        List<Author> authors = authorDao.listAuthorByLastNameLike("Wall");
+
+        assertThat(authors).isNotNull();
+        assertThat(authors.size()).isGreaterThan(0);
     }
 }

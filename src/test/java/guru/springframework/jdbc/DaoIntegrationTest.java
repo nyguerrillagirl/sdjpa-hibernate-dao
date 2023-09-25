@@ -215,4 +215,11 @@ public class DaoIntegrationTest {
         assertThat(author).isNotNull();
         assertThat(author.getFirstName()).isEqualTo("Craig");
     }
+
+    @Test
+    void testGetAuthorByNameNative() {
+        Author author = authorDao.findAuthorByNameNative("Craig", "Walls");
+        assertThat(author).isNotNull();
+        assertThat(author.getFirstName()).isEqualTo("Craig");
+    }
 }
